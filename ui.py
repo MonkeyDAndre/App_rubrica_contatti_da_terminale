@@ -1,7 +1,15 @@
 import os
 import subprocess
+from rich.console import Console
+from rich.panel import Panel
+from rich import box
+
+console = Console()
 
 
+
+BCAKGROUND_COLOR = '#1e1e2e'
+TEXT_COLOR = '#ffffff'
 
 def starting_menu():
     MENU = '''
@@ -95,3 +103,40 @@ def error_message(err, valori_validi):
     if err != 0:
         print(f'Inserito valore non valido. I valori validi sono {valori_validi}.')
 
+
+def menu_panel(renderable, title):
+    console.clear()
+    pannello_menu_principale = Panel(
+        renderable,
+        title=f"[bold yellow]{title}[/bold yellow]",
+        title_align="left",
+        subtitle="[dim]ContactEase[/dim]",
+        subtitle_align="right",
+        box=box.DOUBLE,
+        border_style="cyan",
+        style= f"{TEXT_COLOR}  on {BCAKGROUND_COLOR}", 
+        padding=(1, 4),
+        expand=True,
+        width=200,
+        highlight=False
+    )
+    console.print(pannello_menu_principale)
+
+
+def inserimento_contatti(console):
+
+    pannello_menu_principale = Panel(
+        MENU_PRINCIPALE,
+        title="[bold yellow]Menù Principale Rubrica[/bold yellow]",
+        title_align="left",
+        subtitle="[dim]ContactEase[/dim]",
+        subtitle_align="right",
+        box=box.DOUBLE,
+        border_style="cyan",
+        style= f"{TEXT_COLOR}  on {BCAKGROUND_COLOR}", 
+        padding=(1, 4),
+        expand=True,
+        width=200,
+        highlight=False
+    )
+    console.print(pannello_menu_principale)

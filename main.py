@@ -1,9 +1,30 @@
-import json
+import time
+from rich.console import Console
+from rich.panel import Panel
+from InquirerPy import inquirer
+from InquirerPy.base.control import Choice
+from rich import box
+from rich.prompt import Prompt
 import ui
+import time
+from rich.console import Console
+from InquirerPy import inquirer
+import json
 from Rubrica import Rubrica
 
-
 FILE_NAME = 'contatti.json'
+
+MENU_PRINCIPALE = '''
+    1 ) Aggiungi contatto\n
+    2 ) Visualizza contatti\n
+    3 ) Ricerca un contatto\n
+    4 ) Elimina tutti i contatti\n 
+    5 ) Esci\n\n
+    '''.replace('   ', '')
+
+INSERIMENTO_CONTATTI = '''
+    Aggiungi nuovi contatti 
+    '''.replace('   ', '')
 
 try:
     with open(FILE_NAME, 'r') as f:
@@ -14,172 +35,59 @@ except FileNotFoundError as e:
         json.dump({'contatti' : []}, f, indent=3) 
         rubrica = Rubrica({'contatti' : []}) 
         
-err_menu_principale = 0
-valori_validi_menu_principale = ['1', '2', '3', '4']
 
-while True:
-    ui.clear_screen()
-    ui.starting_menu()
-    ui.error_message(err_menu_principale, valori_validi_menu_principale)
-    op = input('Seleziona opzione -> ')
-    if op == '1':
-        err_menu_principale = 0
-        valori_validi = ['y', 'n']
-        err = 0
-        name = []
-        last_name = []
-        number = []
-        while True:
-            ui.clear_screen()
-            ui.add_contact_menu()  
-            name.append(input('Inserire nome contatto    : '))        
-            last_name.append(input('Inserire cognome contatto : '))
-            number.append(input('Inserire numero contatto  : '))
-            while True:
-                ui.blank_rows(2)
-                ui.error_message(err, valori_validi)
-                scelta = input('Inserire un nuovo contatto? (y/n)  ')
-                if scelta in valori_validi:
-                    err = 0
-                    break
-                else:
-                    err = 1
-            if scelta == 'n' :
-                rubrica.add(name, last_name, number)
-                break
+console = Console()
 
-    elif op == '2':
-        err_menu_principale = 0
-        ui.clear_screen()
-        ui.show_contacts_menu()
-        if rubrica.is_empty():
-            ui.blank_rows(2)
-            print('Non ci sono contatti nella rubrica')
-        else:
-            print(rubrica)
-        ui.blank_rows(3)
-        input('Premere invio per tornare al menù principale...')
+def main():
+    while True:
+        with console.screen():
+            ui.menu_panel(MENU_PRINCIPALE, 'Menù Principale Rubrica')
 
-
-    elif op == '3':
-        err_menu_principale = 0
-        ui.clear_screen()
-        ui.search_contacts_menu()
-        name        = input('Nome    : ')
-        last_name   = input('Cognome : ')
-        ui.blank_rows(2)
-        err = 0
-        valori_validi = []
-        scelta = ''
-        while True:
-            if scelta == 'n' or scelta == '3':
-                break
-            ui.clear_screen()
-            ui.search_contacts_menu()
-            ui.blank_rows(2)
-            if scelta == 'y':
-                name        = input('Nome    : ')
-                last_name   = input('Cognome : ')
-            ui.blank_rows(2)
-            contact_indexes = rubrica.find(name, last_name)
-            rubrica.show(contact_indexes)
-            ui.blank_rows(2)
-            ui.search_contacts_menu_choice(len(contact_indexes))
-
-            if len(contact_indexes) == 0:
-                while True:
-                    if err == 1:
-                        ui.clear_screen()
-                        ui.search_contacts_menu()
-                        ui.blank_rows(2)
-                        rubrica.show(contact_indexes)
-                        ui.blank_rows(2)
-                        print(f'Inserito valore non valido. I valori validi sono {valori_validi}.')
-                    ui.blank_rows(1)
-                    scelta = input('Scelta : ')
-                    if scelta == 'y':
-                        break
-                    elif scelta == 'n':
-                        break
-                    else:
-                        err = 1
-                        valori_validi = ['y', 'n']
-
-            elif len(contact_indexes) == 1:
-                while True:
-                    if err == 1:
-                        ui.clear_screen()
-                        ui.search_contacts_menu()
-                        ui.blank_rows(2)
-                        if contact_indexes:
-                            rubrica.show(contact_indexes)
-                        ui.blank_rows(2)
-                        print(f'Inserito valore non valido. I valori validi sono {valori_validi}.')
-                    scelta = input('Scelta : ')
-                    if scelta == '1':
-                        err = 0
-                        index = int(contact_indexes[0])
-                        rubrica.delete(index)
-                        contact_indexes.remove(index)
-                        
-                    elif scelta == '2':
-                        err = 0
-                        index = int(contact_indexes[0])
-                        new_name        = input('Inserire nome contatto    : ')     
-                        new_last_name   = input('Inserire cognome contatto  : ')
-                        new_number      = input('Inserire numero contatto  : ')
-                        rubrica.modify(int(index), new_name, new_last_name, new_number)
-
-                    elif scelta == '3':
-                        err = 0
-                        break
-                    else:
-                        ui.blank_rows(2)
-                        err = 1
-                        valori_validi = ['1', '2', '3']
-
-            else:
-                while True:
-                    if err == 1:
-                        ui.clear_screen()
-                        ui.search_contacts_menu()
-                        ui.blank_rows(2)
-                        if contact_indexes:
-                            rubrica.show(contact_indexes)
-                        ui.blank_rows(2)
-                        print(f'Inserito valore non valido. I valori validi sono {valori_validi}.')
-                    if scelta == '1':
-                        err = 0
-                        ui.blank_rows(2)
-                        index = input("Inserisci l'indice del contatto da eliminare : ")
-                        rubrica.delete(int(index))
-                        contact_indexes.remove(int(index))
-                        
-                    elif scelta == '2':
-                        err = 0
-                        ui.blank_rows(2)
-                        index = input("Inserisci l'indice del contatto da modificare : ")
-                        new_name        = input('Inserire nome contatto    : ')     
-                        new_last_name   = input('Inserire cognome contatto  : ')
-                        new_number      = input('Inserire numero contatto  : ')
-                        rubrica.modify(int(index), new_name, new_last_name, new_number)
-                        
-                    elif scelta == '3':
-                        err = 0
-                        break
-
-                    else:
-                        ui.blank_rows(2)
-                        err = 1
-                        valori_validi = ['1', '2', '3']
+            scelta = inquirer.rawlist(
+                message= '(Digita un numero o usa le frecce per navigare le opzioni e premi invio per confermare)',
+                choices=["Aggiungi contatto", "Visualizza contatti", "Ricerca un contatto", 
+                         "Elimina tutti i contatti", "Esci"]
+            ).execute()
                     
+            if scelta == 'Aggiungi contatto':
+                name = []
+                number = []
+                email = []
+                address = []
+                while True:
+                    ui.menu_panel(INSERIMENTO_CONTATTI, 'Inserimento Contatti')
+                    name.append(input('Inserire nome contatto       : '))        
+                    number.append(input('Inserire numero contatto     : '))
+                    email.append(input('Inserire email contatto      : '))
+                    address.append(input('Inserire indirizzo contatto  : '))
+                    while True:
+                        ui.menu_panel(INSERIMENTO_CONTATTI, 'Vuoi inserire un altro contatto?')
+                        scelta_inserimento = inquirer.rawlist(
+                                    message= '(Digita un numero o usa le frecce per navigare le opzioni e premi invio per confermare)',
+                                    choices=["Si", "No"]).execute()
+            
+                        if scelta_inserimento == 'Si':
+                            break
+                        else:
+                            break
 
-    elif op == '4':
-        err_menu_principale = 0
-        ui.clear_screen()
-        rubrica.save(FILE_NAME)
-        ui.exit_message()
-        
-        exit(1)    
-    else:
-        err_menu_principale = 1
+                    if scelta_inserimento == 'No':
+                        break
+
+            elif scelta == 'Visualizza contatti':
+
+                input()
+
+            elif scelta == 'Ricerca un contatto':
+                input()
+
+            elif scelta == 'Elimina tutti i contatti':
+                input()
+
+            elif scelta == 'Esci':
+                exit(1)
+
+
+
+if __name__ == "__main__":
+    main()
