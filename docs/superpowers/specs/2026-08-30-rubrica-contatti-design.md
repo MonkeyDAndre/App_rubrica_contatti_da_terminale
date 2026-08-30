@@ -271,7 +271,7 @@ visibile e didattico il ciclo carica/salva.
 | # | Tipo | Contenuto |
 |---|---|---|
 | 1 | markdown | Titolo "ContactEase", descrizione del progetto, requisiti in breve, **nota Colab**: il file `contatti.json` vive nella sessione corrente e viene perso al riciclo della runtime; istruzioni per montare Google Drive se si vuole persistenza permanente. |
-| 2 | code | `!pip install -q rich` + import (`json`, `os`, `rich...`, `IPython.display.clear_output`). |
+| 2 | code | `%pip install -q rich` + import (`json`, `os`, `rich...`, `IPython.display.clear_output`). |
 | 3 | markdown | Spiegazione della classe `Contatto`: ruolo, attributi, `to_dict`/`from_dict`. |
 | 4 | code | Classe `Contatto`. |
 | 5 | markdown | Spiegazione della classe `Rubrica`: stato, elenco dei metodi, formato del file JSON. |
@@ -303,7 +303,7 @@ Controlli `assert`, con stampa finale "Tutti i test superati":
 
 ## Dipendenze
 
-- `rich` — installata in Colab con `!pip install -q rich` (spesso già presente).
+- `rich` — installata in Colab con `%pip install -q rich` (spesso già presente).
 - Standard library: `json`, `os`, `tempfile` (solo nella cella di test).
 - `IPython.display.clear_output` — già disponibile in Colab.
 - **Escluse** rispetto ai prototipi: `InquirerPy`, `subprocess`, `console.screen()`.

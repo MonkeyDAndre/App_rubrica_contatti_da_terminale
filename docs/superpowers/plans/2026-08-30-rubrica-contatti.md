@@ -19,7 +19,7 @@ notebook Jupyter/Colab.
 ## Global Constraints
 
 - Tutto in un solo notebook `ContactEase.ipynb`, eseguibile su Google Colab.
-- Nessuna dipendenza oltre `rich` (installata con `!pip install -q rich`) e la
+- Nessuna dipendenza oltre `rich` (installata con `%pip install -q rich`) e la
   standard library. Vietati `InquirerPy`, `subprocess`, `console.screen()`.
 - Codice in italiano (nomi, commenti, stringhe), commentato e non troppo
   complesso; ogni cella una responsabilità chiara.
@@ -656,7 +656,7 @@ def main():
 **Contenuto celle** (codice preso 1:1 da `scratch/contactease_ref.py`):
 
 1. **md** — titolo, descrizione, requisiti, nota Colab su persistenza + snippet Drive.
-2. **code** — `!pip install -q rich` poi gli import (`import json, os` + import `rich` + `from IPython.display import clear_output`).
+2. **code** — `%pip install -q rich` poi gli import (`import json, os` + import `rich` + `from IPython.display import clear_output`).
 3. **md** — spiegazione `Contatto`.
 4. **code** — classe `Contatto` (da Task 1).
 5. **md** — spiegazione `Rubrica` + formato JSON.
@@ -672,7 +672,7 @@ def main():
 - [ ] **Step 2:** generare il notebook: `python scratch/build_notebook.py`.
 - [ ] **Step 3:** eseguire headless le celle sicure (tutte tranne la 11 che contiene il `main()` interattivo):
   `jupyter nbconvert --to notebook --execute --stdout ContactEase.ipynb --TagRemovePreprocessor... ` — in pratica: uno script `scratch/run_cells.py` che esegue con `nbclient` tutte le celle di codice **eccetto** quella con `main()`, e verifica che la cella 12 non sollevi `AssertionError`.
-- [ ] **Step 4:** aprire il notebook con `nbformat.read`, controllare: 12 celle, tipi corretti nell'ordine md/code previsto, la cella 2 inizia con `!pip install -q rich`.
+- [ ] **Step 4:** aprire il notebook con `nbformat.read`, controllare: 12 celle, tipi corretti nell'ordine md/code previsto, la cella 2 inizia con `%pip install -q rich`.
 - [ ] **Step 5: commit** — `git add ContactEase.ipynb && git commit -m "feat: notebook ContactEase.ipynb completo (12 celle)"`
 
 ---

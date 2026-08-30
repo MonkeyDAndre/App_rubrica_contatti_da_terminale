@@ -17,7 +17,7 @@ print("Celle:", len(nb.cells), tipi)
 assert len(nb.cells) == 12, "attese 12 celle"
 assert tipi == ["markdown", "code", "markdown", "code", "markdown", "code",
                 "markdown", "code", "markdown", "code", "code", "code"]
-assert "!pip install -q rich" in nb.cells[1].source
+assert "%pip install -q rich" in nb.cells[1].source
 
 # Namespace condiviso in cui eseguire le celle, come farebbe il kernel.
 ns = {"__name__": "__main__"}
@@ -28,8 +28,9 @@ for i, cella in enumerate(nb.cells):
     if src.strip().endswith("main()") and "def main" not in src:
         print(f"cella {i}: SALTATA (avvio interattivo)")
         continue
-    # La riga magica "!pip install" non e' Python: la togliamo per l'esecuzione.
-    righe = [r for r in src.splitlines() if not r.lstrip().startswith("!pip")]
+    # Le righe magiche ("%pip install", "!pip") non sono Python: le togliamo.
+    righe = [r for r in src.splitlines()
+             if not r.lstrip().startswith(("%pip", "!pip"))]
     exec(compile("\n".join(righe), f"<cella {i}>", "exec"), ns)
     print(f"cella {i}: OK")
 

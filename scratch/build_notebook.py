@@ -62,8 +62,12 @@ NOME_FILE = '/content/drive/MyDrive/contatti.json'
 # --- Cella 2 : setup ------------------------------------------------------
 CODE_SETUP = """\
 # Installa la libreria "rich" per l'interfaccia formattata.
-# Su Google Colab spesso è già presente: in quel caso questa riga non fa nulla.
-!pip install -q rich
+# Usiamo %pip (non !pip): la magic installa nell'ambiente del kernel in
+# esecuzione, quindi l'import sotto funziona sia su Google Colab sia in locale
+# (VS Code / Jupyter), anche se sul sistema ci sono piu' versioni di Python.
+# Se dopo questa cella l'import di "rich" desse ancora errore, riavvia il
+# kernel/runtime ed esegui di nuovo le celle dall'alto.
+%pip install -q rich
 
 import json
 import os
