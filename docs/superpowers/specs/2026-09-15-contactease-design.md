@@ -61,9 +61,18 @@ il "perché" non è ovvio.
 **`Rubrica`** — gestisce la collezione di contatti e la persistenza:
 
 ```python
-self.contatti = {}      # chiave: id (int) -> valore: oggetto Contatto
-self.prossimo_id = 0
+def __init__(self, percorso_file=''):
+    self.percorso_file = percorso_file
+    self.contatti = {}      # chiave: id (int) -> valore: oggetto Contatto
+    self.prossimo_id = 0
+    if percorso_file:
+        self.carica()
 ```
+
+Il costruttore fa tutto da solo: senza argomenti (default `''`) crea una
+rubrica vuota senza toccare il disco (comodo nei test); con un percorso non
+vuoto chiama subito `carica()`. Non c'è più bisogno di chiamare `carica()`
+separatamente dopo aver creato una `Rubrica`.
 
 `prossimo_id` **non viene salvato nel file**: viene ricalcolato ogni volta
 che una `Rubrica` viene istanziata/caricata, a partire dai contatti
