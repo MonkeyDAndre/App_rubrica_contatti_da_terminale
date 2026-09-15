@@ -55,15 +55,21 @@ il "perché" non è ovvio.
 
 - Attributi: `id`, `nome`, `cognome`, `numero` (obbligatori: nome, cognome,
   numero), `email`, `indirizzo` (facoltativi).
-- Metodi: `to_dict()` e il class method `from_dict(d)`, usati per il
+- Metodi: `to_dict()` e `from_dict(d)` (staticmethod), usati per il
   salvataggio/caricamento JSON.
 
 **`Rubrica`** — gestisce la collezione di contatti e la persistenza:
 
 ```python
 self.contatti = {}      # chiave: id (int) -> valore: oggetto Contatto
-self.prossimo_id = 1
+self.prossimo_id = 0
 ```
+
+`prossimo_id` **non viene salvato nel file**: viene ricalcolato ogni volta
+che una `Rubrica` viene istanziata/caricata, a partire dai contatti
+presenti (0 se vuota, altrimenti `id massimo + 1`). Conseguenza accettata:
+se si elimina il contatto con l'`id` più alto e poi si salva e ricarica,
+quell'`id` può essere riassegnato — scelta di semplicità, non un bug.
 
 Scelta esplicita del **dizionario** (invece di una lista): l'accesso per
 `id` — usato da modifica ed eliminazione — diventa O(1) con
@@ -103,13 +109,15 @@ File JSON locale `contatti.json`, caricato automaticamente all'avvio di
 
 ```json
 {
-  "prossimo_id": 3,
   "contatti": [
-    {"id": 1, "nome": "Mario", "cognome": "Rossi", "numero": "333...",
+    {"id": 0, "nome": "Mario", "cognome": "Rossi", "numero": "333...",
      "email": "", "indirizzo": ""}
   ]
 }
 ```
+
+Il file contiene solo i contatti: `prossimo_id` non è persistito (vedi
+sezione "Modello dati").
 
 Salvataggio esplicito tramite voce di menu, più richiesta di conferma
 all'uscita (nessun autosalvataggio silenzioso). Nota markdown su come
@@ -130,7 +138,7 @@ puntare il file a Google Drive per la persistenza tra sessioni Colab.
 Un'unica cella finale con asserzioni (`assert`), senza framework esterni,
 su un file JSON temporaneo (mai `contatti.json` vero). Scenari coperti:
 
-1. `aggiungi()` assegna id progressivi e aggiorna `prossimo_id`.
+1. `aggiungi()` assegna id progressivi a partire da 0 e aggiorna `prossimo_id`.
 2. `trova_per_id()` trova un contatto esistente, `None` se non esiste.
 3. `cerca()` trova per nome o cognome, case-insensitive.
 4. `modifica()` aggiorna i campi di un contatto esistente, `False` se l'id

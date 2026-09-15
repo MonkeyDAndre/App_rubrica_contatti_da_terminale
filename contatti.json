@@ -1,8 +1,7 @@
 {
-  "prossimo_id": 3,
   "contatti": [
     {
-      "id": 1,
+      "id": 0,
       "nome": "Mario",
       "cognome": "Rossi",
       "numero": "+39 333 1234567",
@@ -10,7 +9,7 @@
       "indirizzo": "Via Roma 1, Milano"
     },
     {
-      "id": 2,
+      "id": 1,
       "nome": "Anna",
       "cognome": "Bianchi",
       "numero": "+39 347 7654321",
