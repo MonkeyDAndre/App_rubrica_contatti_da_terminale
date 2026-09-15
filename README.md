@@ -30,10 +30,10 @@ interagire con il menu.
 
 ## Struttura del progetto
 
-- `ContactEase.ipynb` — l'intera applicazione (classi, interfaccia, test)
+- `ContactEase.ipynb` — l'intera applicazione (classi, interfaccia)
 - `contatti.json` — file dati di esempio, nel formato usato dall'app
-- `docs/superpowers/` — documenti di design e piano di implementazione del
-  progetto
+- `docs/specs/`, `docs/plans/` — documenti di design e piano di
+  implementazione del progetto
 
 ## Tecnologie
 

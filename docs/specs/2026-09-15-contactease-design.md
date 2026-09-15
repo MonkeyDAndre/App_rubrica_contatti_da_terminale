@@ -47,7 +47,6 @@ il "perché" non è ovvio.
 4. Classe `Rubrica`
 5. Funzioni dell'interfaccia utente
 6. Funzione `main()` e avvio dell'app
-7. Cella finale con i test automatici
 
 ### Modello dati
 
@@ -144,19 +143,12 @@ puntare il file a Google Drive per la persistenza tra sessioni Colab.
 
 ### Test
 
-Un'unica cella finale con asserzioni (`assert`), senza framework esterni,
-su un file JSON temporaneo (mai `contatti.json` vero). Scenari coperti:
-
-1. `aggiungi()` assegna id progressivi a partire da 0 e aggiorna `prossimo_id`.
-2. `trova_per_id()` trova un contatto esistente, `None` se non esiste.
-3. `cerca()` trova per nome o cognome, case-insensitive.
-4. `modifica()` aggiorna i campi di un contatto esistente, `False` se l'id
-   non esiste.
-5. `elimina()` rimuove un contatto esistente, `False` se l'id non esiste.
-6. `elenco()` restituisce i contatti ordinati per cognome poi nome.
-7. `salva()` + `carica()` fanno un giro completo su file senza perdere dati.
-
-Ogni assert ha un commento che spiega cosa verifica.
+Durante lo sviluppo, ogni pezzo di `Rubrica` è stato verificato con
+asserzioni (`assert`) su un file JSON temporaneo, mai `contatti.json` vero:
+`aggiungi`/`trova_per_id`, `cerca`, `modifica`/`elimina`, `elenco`,
+`salva`/`carica`, e la validazione `_numero_valido`. Su richiesta esplicita
+dell'utente, la cella di test automatici non fa parte del notebook
+consegnato: il notebook finale contiene solo classi, interfaccia e `main()`.
 
 ## Struttura della repository finale
 
@@ -170,9 +162,8 @@ contatti.json       — 2-3 contatti di esempio fittizi (mostrano il formato
                       a chi apre la repo senza eseguire il notebook)
 .gitignore          — verificato/aggiornato (__pycache__/, .venv/)
 docs/
-  superpowers/
-    specs/          — questo documento e i futuri design
-    plans/          — i piani di implementazione
+  specs/            — questo documento e i futuri design
+  plans/            — i piani di implementazione
   contesto-progetto.md  — spostato qui dalla root a fine progetto
 ```
 
